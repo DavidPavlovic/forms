@@ -45,6 +45,7 @@ const SimpleInput = (props) => {
         setEnteredName('');
         setEnteredEmail('');
         setEnteredEmailTouched(false);
+        setEnteredNameTouched(false);
     };
     
     return (
@@ -58,7 +59,7 @@ const SimpleInput = (props) => {
                     onBlur={nameInputBlurHandler}
                     value={enteredName}
                 />
-                {nameInputIsInvalid && <p className="error-text">Name must not be empty</p>}
+                {nameInputIsInvalid && <p className="error-text">Name must not be empty.</p>}
             </div>
 
             <div className={emailInputClasses}>
@@ -70,7 +71,7 @@ const SimpleInput = (props) => {
                     onBlur={emailInputBlurHandler}
                     value={enteredEmail}
                 />
-                {emailInputIsInvalid && <p className="error-text">Email must be good</p>}
+                {emailInputIsInvalid && <p className="error-text">Please enter a valid email.</p>}
             </div>
 
             <div className="form-actions">
