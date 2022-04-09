@@ -11,41 +11,30 @@ const SimpleInput = (props) => {
         reset: resetNameInput
     } = useInput(value => value.trim() !== '');
 
-
-    const [enteredEmail, setEnteredEmail] = useState('');
-    const [enteredEmailTouched, setEnteredEmailTouched] = useState(false);
-
-    const enteredEmailIsValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(enteredEmail.trim());
-    const emailInputIsInvalid = !enteredEmailIsValid && enteredEmailTouched;
+    const { 
+        value: enteredEmail,
+        isValid: enteredEmailIsValid,
+        hasError: emailInputHasError,
+        valueChangeHandler: emailChangedHandler,
+        inputBlurHandler: emailBlurHandler,
+        reset: resetEmailInput
+    } = useInput(value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim()));
 
     const nameInputClasses = nameInputHasError ? 'form-control invalid' : 'form-control';
-    const emailInputClasses = emailInputIsInvalid ? 'form-control invalid' : 'form-control';
-
+    const emailInputClasses = emailInputHasError ? 'form-control invalid' : 'form-control';
     let formIsValid = false;
 
     if(enteredNameIsValid && enteredEmailIsValid) {
         formIsValid = true;
     }
 
-    const emailInputChangeHandler = event => {
-        setEnteredEmail(event.target.value);
-    };
-
-    const emailInputBlurHandler = event => {
-        setEnteredEmailTouched(true);
-    }
-
     const formSubmitHandler = event => {
         event.preventDefault();
-
-        setEnteredEmailTouched(true);
 
         if(!enteredNameIsValid || !enteredEmailIsValid) return;
 
         resetNameInput();
-
-        setEnteredEmail('');
-        setEnteredEmailTouched(false);
+        resetEmailInput();
     };
     
     return (
@@ -67,11 +56,11 @@ const SimpleInput = (props) => {
                 <input
                     type='email'
                     id='email'
-                    onChange={emailInputChangeHandler}
-                    onBlur={emailInputBlurHandler}
+                    onChange={emailChangedHandler}
+                    onBlur={emailBlurHandler}
                     value={enteredEmail}
                 />
-                {emailInputIsInvalid && <p className="error-text">Please enter a valid email.</p>}
+                {emailInputHasError && <p className="error-text">Please enter a valid email.</p>}
             </div>
 
             <div className="form-actions">
